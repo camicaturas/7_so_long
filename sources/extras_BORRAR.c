@@ -2,6 +2,84 @@
 
 #include "so_long.h"
 
+t_list	*ft_lstlast(t_list *lst)
+{
+	t_list	*n;
+
+	n = lst;
+	if (n == NULL)
+		return (NULL);
+	if (n->next == NULL)
+		return (n);
+	while (n != NULL)
+	{
+		if (n->next == NULL)
+			return (n);
+		n = n->next;
+	}
+	return (NULL);
+}
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*elem;
+
+	elem = (t_list *)malloc(sizeof(t_list));
+	if (elem == NULL)
+		return (NULL);
+	elem->content = content;
+	elem->next = NULL;
+	return (elem);
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	if (lst == NULL)
+		return ;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	ft_lstlast(*(lst))->next = new;
+}
+
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	if (del == NULL)
+		return ;
+	if (lst != NULL)
+	{	
+		(*del)(lst->content);
+		free(lst);
+	}
+}
+
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*tmp;
+
+	if (del == NULL)
+		return ;
+	while (lst && *lst)
+	{
+		tmp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = tmp;
+	}
+	*lst = NULL;
+}
+
+
+
+
+
+
+
+
+////////////////
+
+
 
 int	ft_strcmp(char *s1, char *s2)
 {

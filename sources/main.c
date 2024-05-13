@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "so_long.h"
 
 //int32_t	main(int ac, char **av)
@@ -27,13 +26,14 @@ int32_t	main(void)
 	new_window(&game_struct);
 	textures_load(&game_struct);
 	hooks(&game_struct);
-printf("player position INICIAL (X,Y): %i %i\n", game_struct.player_x, game_struct.player_y);
+	printf("player position INICIAL (X,Y): %i %i\n", game_struct.player_x, game_struct.player_y);
 
 	mlx_loop(game_struct.mlx_ptr);
 	exit_game(&game_struct);
 
 }
- 
+
+
 /*
 // comando para mac
 //gcc main2.c ../lib/MLX42//build/libmlx42.a -Iinclude -lglfw -L"/opt/homebrew/Cellar/glfw/3.4/lib/"

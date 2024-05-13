@@ -27,6 +27,7 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 #endif
+
 //// de aca para arriba
 
 # include "../lib/MLX42/include/MLX42/MLX42.h"
@@ -69,7 +70,6 @@ typedef struct s_struct
 	mlx_texture_t	*exit;
 	mlx_t			*mlx_ptr;
 }	t_struct;
-
 
 //void	check_asset_collision(int **player_position);
 int		check_borders(t_struct *game_struct);
@@ -121,3 +121,97 @@ int	ft_printstr(char *str);
 
 //ft_strcmp (volver a compilar LIBFT con esta funcion porque esta afuera)
 int	ft_strcmp(char *s1, char *s2);
+
+
+
+
+
+
+
+////////////////////////////////////
+
+/////////////////
+
+
+//ESTO ES PARA PROBAR EL EJEMPLO de animacion, borrar luego
+
+
+
+
+
+typedef struct s_win
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+	int		width;	
+	int		height;	
+}		t_win;
+
+typedef struct s_img
+{
+	t_win	win;
+	void	*img_ptr;
+	char	*addr;
+	int		h;
+	int		w;
+	int		bpp;
+	int		endian;
+	int		line_len;
+}		t_img;
+
+/*Window and Images*/
+t_win	new_window2(int w, int h, char *str);
+t_img	new_img(int w, int h, t_win window);
+void	put_pixel_img(t_img img, int x, int y, int color);
+
+
+typedef struct {
+        int a;
+        char b;
+}       simple_struct;
+
+typedef struct s_list
+{
+	simple_struct			*content;
+	struct s_list	*next;
+}		t_list;
+
+
+typedef struct s_animation {
+  t_list*   frames;
+  int       frame_speed;        // The speed of the animation in miliseconds
+  double    accum;              // The accumulator to controll the speed
+  int       current_frame_num;  // Which frame is selected
+  int       mirrored;
+  long int  frame_count;        // The frame count
+} t_animation;
+
+typedef struct sprite_slice {
+  int x;
+  int y;
+  int width;
+  int height;
+  int padding_x;
+  int padding_y;
+} sprite_slice;
+
+typedef struct s_sprite {
+  mlx_image_t*  sprite_img;
+  mlx_t*        mlx;
+} t_sprite;
+
+/* SPRITES */
+t_sprite      new_sprite(char* file_name, mlx_t* mlx);
+t_animation*  slice_sprite(t_sprite* s, sprite_slice slice, int mirrored, int frames, int delay);
+void          destroy_sprite(t_sprite* s);
+
+
+//Funciones que deberian estar dentro de LIBFT
+t_list	*ft_lstnew(void *content);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstdelone(t_list *lst, void (*del)(void*));
+void	ft_lstclear(t_list **lst, void (*del)(void *));
+
+
+
