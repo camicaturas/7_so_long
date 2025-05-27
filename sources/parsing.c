@@ -6,7 +6,7 @@
 /*   By: cberneri < cberneri@student.42prague.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:14:37 by cberneri          #+#    #+#             */
-/*   Updated: 2024/04/15 13:41:52 by cberneri         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:30:19 by cberneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,14 @@ int	map_valid(t_struct *game_struct)
 	while (game_struct->map[j])
 	{
 		i = 0;
-		while (game_struct->map[j][i] != '\0' && game_struct->map[j][i] != '\n')
+		while (game_struct->map[j][i] != '\0'
+				&& game_struct->map[j][i] != '\n')
 		{
 			if ((game_struct->map[j][i] != 'C' && game_struct->map[j][i] != 'P'
-				&& game_struct->map[j][i] != 'E' && game_struct->map[j][i] != '1'
-				&& game_struct->map[j][i] != '0') || i >= game_struct->map_width)
+					&& game_struct->map[j][i] != 'E'
+					&& game_struct->map[j][i] != '1'
+				&& game_struct->map[j][i] != '0')
+					|| i >= game_struct->map_width)
 				return (0);
 			i++;
 		}
@@ -59,7 +62,8 @@ void	flood_fill_check(t_struct *game_struct, int y, int x)
 
 void	flood_fill(int y, int x, t_struct *game_struct)
 {
-	if (x < 0 || y < 0 || x >= game_struct->map_width || y >= game_struct->map_height)
+	if (x < 0 || y < 0 || x >= game_struct->map_width
+		|| y >= game_struct->map_height)
 		return ;
 	else if (game_struct->map[y][x] != '0' && game_struct->map[y][x] != 'C'
 		&& game_struct->map[y][x] != 'P' && game_struct->map[y][x] != 'E')

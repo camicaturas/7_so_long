@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   controller_map.c                                   :+:      :+:    :+:   */
+/*   map_controller.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cberneri < cberneri@student.42prague.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:14:37 by cberneri          #+#    #+#             */
-/*   Updated: 2024/04/15 13:41:52 by cberneri         ###   ########.fr       */
+/*   Updated: 2024/05/17 11:13:30 by cberneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,17 @@
 
 int	check_tilesize(t_struct *game_struct)
 {
-	if (game_struct->map_width * game_struct->map_tile_width > game_struct->screen_width
-		|| game_struct->map_height * game_struct->map_tile_height > game_struct->screen_height)
+	if (game_struct->map_width * game_struct->map_tile_width
+		> game_struct->screen_width
+		|| game_struct->map_height * game_struct->map_tile_height
+		> game_struct->screen_height)
+		return (0);
+	return (1);
+}
+
+int	check_map_shape(t_struct *game_struct)
+{
+	if (game_struct->map_width == game_struct->map_height)
 		return (0);
 	return (1);
 }
@@ -23,17 +32,19 @@ int	check_tilesize(t_struct *game_struct)
 void	check_map(t_struct *game_struct)
 {
 	if (!check_borders(game_struct))
-		exit_error(game_struct, 3);
+		exit_more_map_error(game_struct, 3);
 	if (!map_valid(game_struct))
-		exit_error(game_struct, 3);
+		exit_more_map_error(game_struct, 3);
+	if (!check_map_shape(game_struct))
+		exit_map_error(game_struct, 10);
 	player_spawn_position(game_struct);
 	flood_fill(game_struct->player_y, game_struct->player_x, game_struct);
 	if (!check_player_spawn(game_struct))
-		exit_game_error(game_struct, 6);
-	if (!check_count_collectibles(game_struct))
-		exit_game_error(game_struct, 8);
+		exit_map_error(game_struct, 6);
 	if (!check_exit(game_struct))
-		exit_game_error(game_struct, 7);
+		exit_map_error(game_struct, 7);
+	if (!check_count_collectibles(game_struct))
+		exit_map_error(game_struct, 8);
 	if (!check_tilesize(game_struct))
-		exit_error(game_struct, 9);
+		exit_more_map_error(game_struct, 9);
 }

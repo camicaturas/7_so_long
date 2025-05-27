@@ -6,7 +6,7 @@
 #    By: cberneri < cberneri@student.42prague.co    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 14:55:32 by ohosnedl          #+#    #+#              #
-#    Updated: 2024/04/09 12:28:30 by cberneri         ###   ########.fr        #
+#    Updated: 2024/05/14 09:40:07 by cberneri         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 
 NAME	= so_long
 CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code -Ofast
-#LIBFT	= libft_expanded
+LIBFT	= ./lib/libft_exp
 LIBMLX	= ./lib/MLX42
 CC = cc
 
@@ -38,51 +38,38 @@ WHITE	= \033[0;37m        # White
 ################################################
 ## SOURCES
 
-HEADERS	:= -I ./sources/so_long.h -I $(LIBMLX)/include
-#LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm -L./lib/libft -libft_expanded
-
-#para mac
-#LIBS	:= $(LIBMLX)/build/libmlx42.a -Iinclude -lglfw -L"/opt/homebrew/Cellar/glfw/3.4/lib/" -L"/lib/libft -libft_expanded"
-#LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-LIBS	:= $(LIBMLX)/build/libmlx42.a -Iinclude -ldl -lglfw -pthread -lm -L"/opt/homebrew/Cellar/glfw/3.4/lib/" -L"/lib/libft -libft_expanded"
-#LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm -L./libraries/get_next_line -lget_next_line -L./libraries/ft_printf -lftprintf
-
+HEADERS := -I ./sources/so_long.h -I $(LIBMLX)/include -I $(LIBFT)
+LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm -L$(LIBFT) -lft_expanded
 SOURCES	:= $(shell find ./sources -iname "*.c")
 OBJECTS	:= ${SOURCES:.c=.o}
 
 ################################################
 ## RULES
 
-all: libmlx $(NAME)
+all: libmlx libft $(NAME)
 
 libmlx:
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 
+libft:
+	@$(MAKE) -C $(LIBFT)
+
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
-
 $(NAME): $(OBJECTS)
-#	@$(CC) $(OBJECTS) $(LIBS) $(HEADERS) -o $(NAME) ${LIBFT}
 	@$(CC) $(OBJECTS) $(LIBS) $(HEADERS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) COMPILED!! $(END_COLOR)"
-
-
-#$(LIBFT):
-#	@make all -C $(LIBFT) --no-print-directory
 
 clean:
 	@rm -rf $(OBJECTS)
 	@rm -rf $(LIBMLX)/build
+	@$(MAKE) -C $(LIBFT) clean
 
 fclean: clean
 	@rm -rf $(NAME)
+	@$(MAKE) -C $(LIBFT) fclean
 
-re: clean all
+re: fclean all
 
-#valgrind: $(NAME)
-#	valgrind --leak-check=full ./$(NAME)
-#test:
-#	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=valgrind-out.txt ./$(NAME)
-
-.PHONY: all, clean, fclean, re, libmlx
+.PHONY: all clean fclean re libmlx libft
