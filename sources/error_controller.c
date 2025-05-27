@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_controller.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cberneri < cberneri@student.42prague.co    +#+  +:+       +#+        */
+/*   By: cberneri <cberneri@student.42prague.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:14:37 by cberneri          #+#    #+#             */
-/*   Updated: 2024/05/17 11:05:38 by cberneri         ###   ########.fr       */
+/*   Updated: 2025/05/27 10:53:41 by cberneri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	exit_game_error(t_struct *game_struct, int num)
 {
 	if (num == 1)
 	{
-		ft_printf("Error: Not enough arguments\n");
+		ft_printf("Error: Not enough arguments. Usage: ./so_long <assets/maps/map_name.ber>\n");
 		exit(EXIT_FAILURE);
 	}
 	else if (num == 2)
